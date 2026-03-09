@@ -1,0 +1,41 @@
+# - name: App | Key generate
+#   shell: "php artisan key:generate --show > {{ ansistrano_shared_path }}/app_key"
+#   args:
+#     chdir: "{{ ansistrano_release_path.stdout }}"
+#   failed_when: false
+
+# - name: App | Reading App Key
+#   shell: "cat {{ ansistrano_shared_path }}/app_key"
+#   args:
+#     chdir: "{{ ansistrano_shared_path }}"
+#   register: app_key
+
+- name: App | Composer Install
+  shell: 'composer install'
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+
+- name: Install | Doctrine dbal
+  shell: 'composer require doctrine/dbal'
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+
+- name: Install | Application Install
+  shell: 'composer require chicorycom/cigaformation:dev-master'
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+
+- name: Composer dump autoload
+  shell: 'composer dumpautoload'
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+
+- name: Publish cigaformation public folder
+  shell: 'php artisan chicorycom:install'
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+
+- name: Migrate DATABASE APP
+  shell: 'php artisan migrate --force --path=/vendor/chicorycom/cigaformation/database/migrations'
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"

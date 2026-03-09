@@ -1,0 +1,27 @@
+- name: App | .env
+  template:
+    src: env.j2
+    dest: "{{ ansistrano_shared_path }}/.env"
+
+- name: App | composer.json
+  template:
+    src: composer.j2
+    dest: "{{ ansistrano_shared_path }}/composer.json"
+
+- name: App | Laravel Storage directory
+  file:
+    path: "{{ item }}"
+    mode: 0777
+    state: directory
+  with_items:
+    - "{{ ansistrano_shared_path }}/storage/app/public"
+    - "{{ ansistrano_shared_path }}/storage/app/public/images"
+    - "{{ ansistrano_shared_path }}/storage/framework/cache"
+    - "{{ ansistrano_shared_path }}/storage/framework/cache/data"
+    - "{{ ansistrano_shared_path }}/storage/framework/sessions"
+    - "{{ ansistrano_shared_path }}/storage/framework/testing"
+    - "{{ ansistrano_shared_path }}/storage/framework/views"
+    - "{{ ansistrano_shared_path }}/storage/logs"
+
+
+

@@ -1,0 +1,9 @@
+---
+- name: Deployement Ciga Formation
+  hosts: api
+  remote_user: "{{ user }}"
+  tasks:
+  - include_vars:
+      file: vars.yml
+  - include_role:
+      name: ansistrano.deploy
