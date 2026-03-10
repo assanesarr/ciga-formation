@@ -4,10 +4,10 @@ services:
     ####################################################################################################
     appciga:
         image: rssni/ciga-formation:latest
+        user: ciga
         restart: unless-stopped
         volumes:
-            - .env:/var/www/.env
-            - ./public/storage:/var/www/public/storage:cached
+             - .:/var/www:cached
         networks:
             - cigaformation
         deploy:
@@ -22,8 +22,8 @@ services:
         image: nginx
         container_name: proxy-ciga
         restart: unless-stopped
-        expose:
-            - '80'
+        ports:
+            - '8000:80'
 
         volumes:
             - .docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
