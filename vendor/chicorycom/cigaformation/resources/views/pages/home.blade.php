@@ -163,8 +163,8 @@
 @endsection
 @push('scripts')
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script src="{{ asset('js/kinetic.js') }}"></script>
-    <script src="{{ asset('js/countdown.min.js') }}"></script>
+    <script src="/js/kinetic.js"></script>
+    <script src="/js/countdown.min.js"></script>
     <script type="text/javascript">
         (function ($) {
             var now = Math.round(new Date().getTime()/1000);

@@ -14,8 +14,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <script src="{{ asset('students/js/auth.js') }}" ></script>
+    <link href="/css/style.css" rel="stylesheet">
+    <script src="/students/js/auth.js" ></script>
 </head>
 <body class="auth-layout">
     <div class="main">

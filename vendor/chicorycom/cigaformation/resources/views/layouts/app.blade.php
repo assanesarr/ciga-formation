@@ -14,7 +14,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
 
 </head>
 <body class="water-loading">
@@ -35,8 +35,8 @@
         </div>
 
 
-        <script src="{{ asset('js/theme.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('js/loader.min.js') }}"></script>
+        <script src="/js/theme.js"></script>
+        <script type="text/javascript" src="/js/loader.min.js"></script>
         @stack('scripts')
 </body>
 </html>
