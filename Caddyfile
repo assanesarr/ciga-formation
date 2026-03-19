@@ -1,0 +1,7 @@
+localhost {
+
+    root * /var/www/public
+    php_fastcgi appciga:9000
+    file_server
+    tls internal
+}

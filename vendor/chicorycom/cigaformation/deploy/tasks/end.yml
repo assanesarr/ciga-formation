@@ -1,0 +1,49 @@
+#- name: "App | Composer Update"
+#  composer:
+#    command: update
+#    working_dir: "{{ ansistrano_release_path.stdout }}"
+    # optimize_autoloader: true
+#  failed_when: false
+
+- name: Cache Clear APP
+  shell: 'php artisan cache:clear'
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+
+- name: View Clear APP
+  shell: 'php artisan view:clear'
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+
+- name: Clear Router APP
+  shell: 'php artisan route:clear'
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+
+- name: Storage Link
+  shell: 'php artisan storage:link'
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
+
+
+# - name: Start Or Restart queue:work
+#   shell: 'pm2 start artisan --name laravel-worker --interpreter php -- queue:work --tries=3 --timeout=600'
+#   args:
+#     chdir: "{{ ansistrano_release_path.stdout }}"
+
+
+# - name: Socket Echo server Start
+#   shell: 'pm2 restart echo'
+#   args:
+#     chdir: "{{ ansistrano_shared_path }}"
+
+
+#- name: SEED Menus APP
+#  shell: 'php artisan db:seed --class=MenusSeeder --force'
+#  args:
+#    chdir: "{{ ansistrano_release_path.stdout }}"
+
+#- name: SEED Permission APP
+#  shell: 'php artisan db:seed --class=PermissionSeeder --force'
+#  args:
+#    chdir: "{{ ansistrano_release_path.stdout }}"

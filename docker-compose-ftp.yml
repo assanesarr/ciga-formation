@@ -1,0 +1,30 @@
+services:
+  sftpgo:
+    image: drakkan/sftpgo:latest
+    container_name: sftpgo
+    restart: always
+    expose:
+      - 8081
+    # ports:
+    #   - "8080:8080"   # Web UI
+    #   #- "2022:2022"   # SFTP
+    #   #- "2121:2121"   # FTP (optionnel)
+    environment:
+      SFTPGO_HTTPD__BINDINGS__0__PORT: 8081
+      SFTPGO_DATA_PROVIDER__CREATE_DEFAULT_ADMIN: "true"
+      SFTPGO_DEFAULT_ADMIN_USERNAME: assanesarr
+      SFTPGO_DEFAULT_ADMIN_PASSWORD: "@ss@neS@rr"
+    volumes:
+      - .:/home/sftpgo
+      - sftpgo_data:/var/lib/sftpgo
+     # - .:/var/lib/sftpgo
+    networks:
+      - cigaformation
+
+volumes:
+  sftpgo_data:
+
+networks:
+    cigaformation:
+        name: cigaformation
+        external: true

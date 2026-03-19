@@ -1,0 +1,15 @@
+.idea
+/node_modules
+/public/hot
+/storage/*.key
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/devops/terraform/.terraform/
+/devops/terraform/.terraform.lock.hcl
+/devops/terraform/*.tfstate
+/devops/terraform/*.tfstate.backup
+
+

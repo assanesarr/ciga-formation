@@ -1,0 +1,14 @@
+ansistrano_deploy_to: /home/clients/830d7e865f68d635e79e237214482143/web/cigaformation
+ansistrano_deploy_via: "git"
+ansistrano_git_repo: "git@github.com:chicorycom/app-deploy.git"
+ansistrano_git_branch: main
+ansistrano_keep_releases: 1
+ansistrano_shared_paths: ["storage", "bootstrap/cache", "vendor", ]
+ansistrano_shared_files: [".env", "composer.json"]
+ansistrano_rsync_extra_params: " --exclude=deploy"
+ansistrano_before_symlink_shared_tasks_file: "{{ playbook_dir }}/tasks/before_symlink_config.yml"
+ansistrano_after_symlink_shared_tasks_file: "{{ playbook_dir }}/tasks/after-symlink-tasks.yml"
+ansistrano_after_symlink_tasks_file: "{{ playbook_dir }}/tasks/end.yml"
+#ansistrano_git_identity_key_path: "{{ lookup('file', '~/.ssh/id_rsa') }}"
+#ansistrano_git_identity_key_remote_path: "/home/clients/830d7e865f68d635e79e237214482143/.ssh/id_rsa"
+

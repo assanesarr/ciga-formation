@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  role_name: docker
+  author: your_name
+  description: Install Docker on Debian and RedHat based systems
+  license: MIT
+  min_ansible_version: "2.14"
+  platforms:
+    - name: Ubuntu
+    - name: Debian
+    - name: EL

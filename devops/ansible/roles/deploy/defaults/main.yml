@@ -1,0 +1,8 @@
+---
+app_repo: "https://github.com/assanesarr/ciga-formation.git"
+app_dest: "/var/www/ciga-formation"
+app_user: "www-data"
+app_group: "www-data"
+# dockerfile_name: "Dockerfile"   # Nom du Dockerfile dans le repo
+# compose_file: "docker-compose.yml"
+# app_service_name: "myapp"

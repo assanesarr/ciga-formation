@@ -1,0 +1,24 @@
+---
+- name: Créer le répertoire de destination
+  file:
+    path: "{{ app_dest }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0755'
+
+- debug:
+    var: app_repo
+
+- name: Cloner le dépôt Git
+  git:
+    repo: "{{ app_repo }}"
+    dest: "{{ app_dest }}"
+    version: "{{ app_branch | default('main') }}"
+    force: yes
+    update: yes
+    accept_hostkey: yes
+  become: yes
+  become_user: "{{ app_user }}"
+  notify:
+    - Launch Docker Compose

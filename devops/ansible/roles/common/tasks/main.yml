@@ -1,0 +1,42 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install basic packages
+  apt:
+    name:
+      - curl
+      - git
+      - htop
+      - acl
+    state: present
+
+- name: Install locales package
+  ansible.builtin.apt:
+    name: locales
+    state: present
+    update_cache: yes
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Ensure en_US.UTF-8 locale is generated
+  ansible.builtin.locale_gen:
+    name: en_US.UTF-8
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Set system default locale
+  ansible.builtin.copy:
+    dest: /etc/default/locale
+    content: |
+      LANG=en_US.UTF-8
+      LC_ALL=en_US.UTF-8
+    mode: '0644'
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Créer /var/www
+  file:
+    path: /var/www
+    state: directory
+    owner: www-data   # optionnel, propriétaire
+    group: www-data   # optionnel, groupe
+    mode: '0755'      # permissions
