@@ -1,5 +1,5 @@
 ---
-- name: Run `docker compose up` again
+- name: Launch Docker Compose
   community.docker.docker_compose_v2:
     project_src: "{{ app_dest }}"
     register: output

@@ -52,7 +52,7 @@ services:
     # DATABASE (MySQL)
     ####################################################################################################
     dbciga:
-        image: mysql:5.7
+        image: mysql:8.0
         platform: linux/amd64
         restart: unless-stopped
         expose:
@@ -73,15 +73,16 @@ services:
             - appciga
         networks:
             - cigaformation
-        deploy:
-            resources:
-                limits:
-                    cpus: 0.1
-                    memory: 256M
+        # deploy:
+        #     resources:
+        #         limits:
+        #             cpus: 0.1
+        #             memory: 256M
     
     adminer:
         image: adminer
         restart: always
+        profiles: [adminer]
         expose:
             - 8080
         networks:
