@@ -14,9 +14,10 @@ services:
       - cigaformation
 
   dbciga:
-    image: mysql:5.7
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password #👉 force MySQL à utiliser l’ancien plugin
     restart: unless-stopped
-    container_name: dtabase
+    container_name: database
     expose:
       - '3306'
     volumes:
