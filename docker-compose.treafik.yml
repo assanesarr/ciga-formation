@@ -1,0 +1,70 @@
+services:
+
+  appciga:
+    build:
+      args:
+        user: school-user
+        uid: 1000
+      context: .docker/php
+    container_name: ciga
+    restart: unless-stopped
+    volumes:
+      - .:/var/www:cached
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ciga.rule=Host(`test.ciga-formation.com`)"
+      - "traefik.http.routers.ciga.entrypoints=websecure"
+      - "traefik.http.routers.ciga.tls.certresolver=leresolver"
+      - "traefik.http.services.ciga.loadbalancer.server.port=9000"  # PHP-FPM écoute sur 9000
+    networks:
+      - cigaformation
+
+  dbciga:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password #👉 force MySQL à utiliser l’ancien plugin
+    restart: unless-stopped
+    container_name: database
+    expose:
+      - '3306'
+    volumes:
+      - ./.docker/mysql/dump/ciga.sql:/docker-entrypoint-initdb.d/ciga.sql
+      - ./.docker/mysql/config:/etc/mysql/conf.d
+      - ciga_db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_ALLOW_EMPTY_PASSWORD: false
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - cigaformation
+
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      - "--api.insecure=true"                     # Dashboard Traefik accessible sur port 8080
+      - "--providers.docker=true"                 # Traefik détecte les conteneurs Docker
+      - "--entrypoints.web.address=:80"          # HTTP
+      - "--entrypoints.websecure.address=:443"   # HTTPS
+      - "--certificatesresolvers.leresolver.acme.tlschallenge=true" # Let's Encrypt TLS challenge
+      - "--certificatesresolvers.leresolver.acme.email=ton-email@example.com"
+      - "--certificatesresolvers.leresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"   # Dashboard Traefik
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "traefik_letsencrypt:/letsencrypt"
+
+volumes:
+  traefik_letsencrypt:
+  
+networks:
+  cigaformation:
+    name: cigaformation
+    driver: bridge

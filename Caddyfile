@@ -1,7 +1,23 @@
 test.ciga-formation.com {
 
+    # Racine du projet
     root * /var/www/public
+
+    # Redirection des requêtes PHP vers le conteneur appciga
     php_fastcgi appciga:9000
+
+    # Essayer le fichier demandé, sinon passer à index.php (utile pour frameworks PHP)
+    try_files {path} /index.php?{query}
+
+    # Servir les fichiers statiques
     file_server
-    tls internal
+
+    # Redirections HTTPS automatiques et sécurités de base
+    encode gzip
+    header {
+        Strict-Transport-Security "max-age=31536000;"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        X-XSS-Protection "1; mode=block"
+    }
 }
