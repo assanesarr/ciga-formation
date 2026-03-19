@@ -30,10 +30,11 @@ services:
         image: nginx
         container_name: proxy-ciga
         restart: unless-stopped
-        expose:
-            - '80'
-        # ports:
-        #     - '8000:80'
+        # expose:
+        #     - '80'
+        ports:
+            - '80:80'
+            - '443:443'
         labels:
             - caddy=ciga-formation.com
             - caddy.reverse_proxy="{{upstreams 80}}"

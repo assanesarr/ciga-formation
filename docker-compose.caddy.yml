@@ -1,0 +1,61 @@
+services:
+
+  appciga:
+    build:
+      args:
+        user: school-user
+        uid: 1000
+      context: .docker/php
+    container_name: ciga
+    restart: unless-stopped
+    volumes:
+      - .:/var/www:cached
+    networks:
+      - cigaformation
+
+  dbciga:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password #👉 force MySQL à utiliser l’ancien plugin
+    restart: unless-stopped
+    container_name: database
+    expose:
+      - '3306'
+    volumes:
+      - ./.docker/mysql/dump/ciga.sql:/docker-entrypoint-initdb.d/ciga.sql
+      - ./.docker/mysql/config:/etc/mysql/conf.d
+      - ciga_db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_ALLOW_EMPTY_PASSWORD: false
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - cigaformation
+
+  caddy:
+    image: caddy:latest
+    container_name: server_caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - .:/var/www
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - cigaformation
+
+volumes:
+  ciga_db:
+  caddy_data:
+  caddy_config:
+
+networks:
+  cigaformation:
+    name: cigaformation
+    driver: bridge
