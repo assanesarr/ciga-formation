@@ -2,7 +2,8 @@
 - name: Launch Docker Compose
   community.docker.docker_compose_v2:
     project_src: "{{ app_dest }}"
-    register: output
+    state: present
+  register: result   # ✅ Correct
 
 - name: Show results
   ansible.builtin.debug:

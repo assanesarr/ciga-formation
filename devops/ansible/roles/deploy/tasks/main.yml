@@ -20,5 +20,16 @@
     accept_hostkey: yes
   become: yes
   become_user: "{{ app_user }}"
-  notify:
-    - Launch Docker Compose
+  # notify:
+  #   - Launch Docker Compose
+
+- name: Lancer la stack Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: "{{ app_dest }}"
+    files:
+      - docker-compose.prod.yml
+    state: present
+  register: compose_result  
+
+- debug:
+    var: compose_result
